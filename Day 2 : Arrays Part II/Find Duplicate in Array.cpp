@@ -11,7 +11,7 @@
  * Note:
  *      All the integers in the array appear only once except for precisely one integer which appears two or more times.
  * 
- * Category : Easy
+ * Category: Easy
 */
 
 #include <bits/stdc++.h>
