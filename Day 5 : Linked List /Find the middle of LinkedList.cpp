@@ -13,31 +13,19 @@
  * Category: Easy
 */
 
+/******* Approach 1 *******/
 
-/*
-Following is the class structure of the Node class:
-
-class Node
-{
-public:
-    int data;
-    Node *next;
-    Node()
-    {
-        this->data = 0;
-        next = NULL;
-    }
-    Node(int data)
-    {
-        this->data = data; 
-        this->next = NULL;
-    }
-    Node(int data, Node* next)
-    {
-        this->data = data;
-        this->next = next;
-    }
-};
+/**
+ * Tortoise-Hare-Approach
+ *      - We don’t have to maintain node count and we will be able to find the middle node in a single traversal so this approach is more efficient.
+ * 
+ * Intuition: In the Tortoise-Hare approach, we increment slow ptr by 1 and fast ptr by 2, so if we take a close look fast ptr will travel double that of the slow pointer. So when the fast ptr will be at the end of the Linked List, slow ptr would have covered half of the Linked List till then. So slow ptr will be pointing towards the middle of Linked List.
+ * 
+ * Approach: 
+ *      1. Create two pointers slow and fast and initialize them to a head pointer.
+ *      2. Move slow ptr by one step and simultaneously fast ptr by two steps until fast ptr is NULL or next of fast ptr is NULL.
+ *      3. When the above condition is met, we can see that the slow ptr is pointing towards the middle of the Linked List and hence we can return the slow pointer.
+ * 
 */
 
 Node *findMiddle(Node *head) {
@@ -52,3 +40,35 @@ Node *findMiddle(Node *head) {
     return slow;
 }
 
+
+/******* Approach 2 *******/
+
+/**
+ * 
+ * Solution 2: Native Approach (Brute Force)
+ * 
+ * Intuition: We can traverse through the Linked List while maintaining a count of nodes let’s say in variable n, and then traversing for 2nd time for n/2 nodes to get to the middle of the list.
+ * 
+ * 
+ *   class Solution {
+ *   public:
+ *       ListNode* middleNode(ListNode* head) {
+ *           int n = 0;
+ *           ListNode* temp = head;
+ *           while(temp) {
+ *               n++;
+ *                   temp = temp->next;
+ *           }
+ *       
+ *           temp = head;
+ *       
+ *           for(int i = 0; i < n / 2; i++) {
+ *                   temp = temp->next;
+ *           }
+ *       
+ *           return temp;
+ *       }
+ *   };
+ * 
+ * 
+*/
