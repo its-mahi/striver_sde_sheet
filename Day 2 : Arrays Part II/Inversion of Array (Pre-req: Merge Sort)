@@ -1,0 +1,169 @@
+/**
+ * @author : its_mahi
+ * 
+ * Code : https://www.codingninjas.com/studio/problems/number-of-inversions_6840276?utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_Arrayproblems
+ * Article : https://takeuforward.org/data-structure/count-inversions-in-an-array/
+ * 
+ * Desc : Given an array of N integers, count the inversion of the array (using merge-sort).
+ *        What is an inversion of an array? Definition: for all i & j < size of array, if i < j then you have to find pair (A[i],A[j]) such that A[j] < A[i].
+ * 
+ * 
+ * Brute Force : 
+ *      Expected Time Complexity: O(N^2) 
+ *      Expected Auxiliary Space: O(1)
+ * 
+ * Optimal Approach : 
+ *      Expected Time Complexity: O(N*logN) 
+ *      Expected Auxiliary Space: O(N)
+ * 
+ * Category : Moderate
+*/
+
+
+/**
+ * 
+ * Approach : Brute Force
+ * 
+    #include <bits/stdc++.h>
+    using namespace std;
+
+    int numberOfInversions(vector<int>&a, int n) {
+
+        // Count the number of pairs:
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (a[i] > a[j]) cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    int main()
+    {
+        vector<int> a = {5, 4, 3, 2, 1};
+        int n = 5;
+        int cnt = numberOfInversions(a, n);
+        cout << "The number of inversions is: "
+            << cnt << endl;
+        return 0;
+    }
+ * 
+*/
+
+/**
+ * 
+ * Description: 
+ * 
+ * The given code implements a function to count the number of inversions in an array using the merge sort algorithm. Inversions are pairs of indices (i, j) such that i < j and arr[i] > arr[j].
+ * 
+ * Approach:
+
+    1. 🔄 **Merge Sort Approach:**
+    - The array is recursively divided into halves until individual elements are reached.
+    - During the merge step, inversions are counted by comparing elements from different halves.
+
+    2. 🧩 **Functions:**
+    - `compareSortedArray`: Counts inversions between two sorted subarrays.
+    - `mergeArr`: Merges two sorted subarrays while counting inversions.
+    - `mergeSort`: Recursively sorts and merges subarrays while accumulating inversion counts.
+
+    3. 📊 **Counting Inversions:**
+    - Inversions are counted during the merging step when an element from the right subarray is smaller than an element from the left subarray.
+
+    4. 🔄 **Recursion:**
+    - Recursively applies merge sort on the left and right halves of the array.
+
+    5. 📈 **Return:**
+    - The total count of inversions is returned from the `mergeSort` function.
+
+    6. 🚀 **Usage:**
+    - The `numberOfInversions` function initializes the answer and calls `mergeSort` on the entire array.
+
+    7. 🕰️ **Time Complexity:**
+    - The time complexity of the algorithm is O(n log n) due to the merge sort.
+
+    8. 💾 **Space Complexity:**
+    - Additional space is used for the temporary array in the `mergeArr` function, resulting in O(n) space complexity.
+
+    9. ⚠️ **Note:**
+    - The code assumes that the input array is a vector of integers.
+
+    10. 🌟 **Overall:**
+    - The code efficiently employs the merge sort algorithm to count inversions, demonstrating a divide-and-conquer strategy for solving the problem.
+*/
+
+
+
+int compareSortedArray(vector<int> arr, int i, int mid, int j) {
+    int res = 0;
+
+    for(int q=mid+1 ; q<j ; q++) {
+        for(int p=i ; p<=mid ; p++) {
+            if(arr[p] > arr[q]) {
+                res += mid-p+1;
+                break;
+            }
+        }
+    }
+
+    return res;
+}
+
+int mergeArr(vector<int> &arr, int i, int mid, int j) {
+    vector<int> temp;
+
+    int p=i;
+    int q=mid+1;
+    int cnt = 0;
+
+    while(p<=mid && q<=j) {
+        if(arr[p] <= arr[q]) {
+            temp.push_back(arr[p]);
+            p++;
+        }
+        else {
+            temp.push_back(arr[q]);
+            q++;
+            cnt += (mid - p + 1);
+        }
+    }
+
+    while(p<=mid) {
+        temp.push_back(arr[p]);
+        p++;
+    }
+    
+    while(q<=j) {
+        temp.push_back(arr[q]);
+        q++;
+    }
+
+    for (int x =i ; x<=j ; x++) {
+        arr[x] = temp[x - i];
+    }
+
+    return cnt;
+}
+
+int mergeSort(vector<int> &arr, int i, int j) {
+    int cnt = 0;
+    if (i >= j) {
+        return cnt;
+    }
+    
+    int mid = (i + j) / 2 ;
+    
+    cnt += mergeSort(arr, i, mid);
+    cnt += mergeSort(arr, mid + 1, j);
+    cnt += mergeArr(arr, i, mid, j); 
+    
+    return cnt;
+}
+
+int numberOfInversions(vector<int>&arr, int n) {
+    int ans = 0;
+    return mergeSort(arr, 0, n-1);
+
+    return ans;
+}
